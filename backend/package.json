@@ -6,7 +6,8 @@
     "dev": "sls offline start --stage dev"
   },
   "dependencies": {
-    "aws-sdk": "^2.1370.0"
+    "aws-sdk": "^2.1370.0",
+    "serverless-appsync-plugin": "^2.2.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.101",
