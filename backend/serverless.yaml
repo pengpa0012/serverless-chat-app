@@ -23,38 +23,6 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-
-functions:
-  createUser:
-    handler: src/functions/users/createUser.handler
-    events:
-      - httpApi:
-          path: /createUser
-          method: POST
-  getMessages:
-    handler: src/functions/users/getMessages.handler
-    events:
-      - httpApi:
-          path: /getMessages
-          method: GET
-  getOnlineUsers:
-    handler: src/functions/users/getOnlineUsers.handler
-    events:
-      - httpApi:
-          path: /getOnlineUsers
-          method: GET
-  getUsers:
-    handler: src/functions/users/getUsers.handler
-    events:
-      - httpApi:
-          path: /getUsers
-          method: GET
-  sendMessage:
-    handler: src/functions/users/sendMessage.handler
-    events:
-      - httpApi:
-          path: /sendMessage
-          method: POST
 plugins:
   - serverless-offline
   - serverless-plugin-typescript
