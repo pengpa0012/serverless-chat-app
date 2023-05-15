@@ -3,21 +3,31 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs12.x
   region: ap-southeast-1
+
+plugins:
+  - serverless-appsync-plugin
 
 custom:
   appSync:
     name: chatAppAppSync
-    authenticationType: AMAZON_COGNITO_USER_POOLS
-    mappingTemplatesLocation: ${file(src/resolvers)}
+    authenticationType: API_KEY
+    mappingTemplatesLocation: resolvers
     mappingTemplates:
       - dataSource: RawTable
         type: Query
         field: getUserById
-    schema: ${file(src/graphql/schema.graphql)}
+      - dataSource: RawTable
+        type: Mutation
+        field: createUser
     additionalAuthenticationProviders:
       - authenticationType: AWS_IAM
+    dataSources:
+      - type: AMAZON_DYNAMODB
+        name: RawTable
+        config:
+          tableName: chatAppTable
 
 resources:
   Resources:
@@ -25,11 +35,35 @@ resources:
       Type: "AWS::DynamoDB::Table"
       Properties:
         TableName: chatAppTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-
-plugins:
-  - serverless-offline
-  - serverless-plugin-typescript
-  - serverless-appsync-plugin
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    # UserPool:
+    #   Type: AWS::Cognito::Userpool
+    #   Properties:
+    #     UserPoolName: ChatAppUser
+    #     AdminCreateUserConfig:
+    #       AllowAdminCreateUseronly: false
+    #     AutoverifiedAttributes:
+    #       - phone_number
+    #       - email
+    #     MfaConfiguration: OPTIONAL
+    #     Schema:
+    #       - AttributeDataType: String
+    #         Mutable: true
+    #         Name: type
+    #       - AttributeDataType: String
+    #         Mutable: true
+    #         Name: roles
+    #     Policies:
+    #       PasswordPolicy:
+    #         RequireLowercase: false
+    #         RequireUppercase: false
+    #         RequireSymbols: false
+    #         RequireNumbers: false

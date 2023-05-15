@@ -1,0 +1,12 @@
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($util.autoId())
+  },
+  "attributeValues": {
+    "name": $util.dynamodb.toDynamoDBJson($ctx.args.input.name),
+    "age": $util.dynamodb.toDynamoDBJson($ctx.args.input.age),
+    "bio": $util.dynamodb.toDynamoDBJson($ctx.args.input.bio)
+  }
+}

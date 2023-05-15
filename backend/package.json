@@ -5,15 +5,7 @@
   "scripts": {
     "dev": "sls offline start --stage dev"
   },
-  "dependencies": {
-    "aws-sdk": "^2.1370.0",
-    "serverless-appsync-plugin": "^2.2.1"
-  },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.101",
-    "serverless": "^3.21.0",
-    "serverless-offline": "^9.1.6",
-    "serverless-plugin-typescript": "^2.1.2",
-    "typescript": "^4.7.4"
+    "serverless-appsync-plugin": "^1.12.0"
   }
 }
