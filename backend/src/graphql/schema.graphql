@@ -1,20 +1,20 @@
 type User {
   id: ID!
   name: String!
-  age: Number!
+  age: Int!
   bio: String!
 }
 
 input CreateUserInput {
   name: String!
-  age: String!
+  age: Int!
   bio: String!
 }
 
 input UpdateUserInput {
   id: ID!
   name: String
-  age: String
+  age: Int
   bio: String
 }
 
@@ -26,4 +26,9 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput!): User
   updateUser(input: UpdateUserInput!): User
+}
+
+schema {
+	query: Query
+	mutation: Mutation
 }

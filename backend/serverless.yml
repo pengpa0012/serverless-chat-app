@@ -1,0 +1,35 @@
+service: serverless-chat-app-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-southeast-1
+
+custom:
+  appSync:
+    name: chatAppAppSync
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    mappingTemplatesLocation: ${file(src/resolvers)}
+    mappingTemplates:
+      - dataSource: RawTable
+        type: Query
+        field: getUserById
+    schema: ${file(src/graphql/schema.graphql)}
+    additionalAuthenticationProviders:
+      - authenticationType: AWS_IAM
+
+resources:
+  Resources:
+    RawTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: chatAppTable
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-appsync-plugin
