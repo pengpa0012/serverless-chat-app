@@ -1,0 +1,25 @@
+#set($input = $ctx.args.input)
+{
+  "version" : "2017-02-28",
+  "operation" : "UpdateItem",
+  "key" : {
+    "id": $util.dynamodb.toDynamoDBJson($input.id)
+  },
+  "update" : {
+    "expression" : "SET #name = :name, #age = :age, #bio = :bio",
+    "expressionNames" : {
+      "#name" : "name",
+      "#age" : "age",
+      "#bio" : "bio"
+    },
+    "expressionValues" : {
+      ":name" : $util.dynamodb.toDynamoDBJson($input.name),
+      ":age" : $util.dynamodb.toDynamoDBJson($input.age),
+      ":bio" : $util.dynamodb.toDynamoDBJson($input.bio)
+    }
+  },
+  "condition" : {
+    "expression" : "attribute_exists(id)"
+  },
+  "returnValues" : "ALL_NEW"
+}

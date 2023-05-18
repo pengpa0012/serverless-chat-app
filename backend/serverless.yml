@@ -34,6 +34,9 @@ custom:
       - dataSource: RawTable
         type: Mutation
         field: deleteUser
+      - dataSource: RawTable
+        type: Mutation
+        field: updateUser
     additionalAuthenticationProviders:
       - authenticationType: AWS_IAM
     dataSources:

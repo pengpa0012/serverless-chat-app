@@ -5,6 +5,17 @@ type User {
   bio: String!
 }
 
+type Message {
+  id: ID!
+  user: String!
+  message: String!
+}
+
+type MessageInput {
+  user: String!
+  message: String!
+}
+
 input CreateUserInput {
   name: String!
   age: Int!
@@ -25,6 +36,7 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User
+  createMessage(input: MessageInput!): Message
   updateUser(input: UpdateUserInput!): User
   deleteUser(id: ID!): User
 }
