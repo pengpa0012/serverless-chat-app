@@ -1,14 +1,14 @@
 type User {
   id: ID!
-  name: String!
-  age: Int!
-  bio: String!
+  name: String
+  age: Int
+  bio: String
 }
 
 type Message {
   id: ID!
-  user: String!
-  message: String!
+  user: String
+  message: String
 }
 
 input MessageInput {
@@ -35,7 +35,13 @@ type Mutation {
   deleteUser(id: ID!): User
 }
 
+type Subscription {
+  onCreateMessage: Message
+  @aws_subscribe(mutations: ["createMessage"])
+}
+
 schema {
 	query: Query
 	mutation: Mutation
+  subscription: Subscription
 }

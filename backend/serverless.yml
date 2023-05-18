@@ -40,6 +40,9 @@ custom:
       - dataSource: RawTable
         type: Query
         field: getAllMessages
+      - dataSource: RawTable
+        type: Mutation
+        field: createMessage
     additionalAuthenticationProviders:
       - authenticationType: AWS_IAM
     dataSources:
