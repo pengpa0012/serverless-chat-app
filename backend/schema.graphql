@@ -25,6 +25,7 @@ input UserInput {
 type Query {
   getUserById(id: ID!): User
   getAllUsers: [User]
+  getAllMessages: [Message]
 }
 
 type Mutation {

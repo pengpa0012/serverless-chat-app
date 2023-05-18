@@ -37,6 +37,9 @@ custom:
       - dataSource: RawTable
         type: Mutation
         field: updateUser
+      - dataSource: RawTable
+        type: Query
+        field: getAllMessages
     additionalAuthenticationProviders:
       - authenticationType: AWS_IAM
     dataSources:
