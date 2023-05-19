@@ -47,6 +47,4 @@ schema {
 }
 
 # Todo
-# fixed the issue on user and message query
-# maybe use different table for each
 # test subscription on client
