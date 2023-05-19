@@ -9,6 +9,7 @@ type Message {
   id: ID!
   user: String
   message: String
+  date: AWSTimestamp
 }
 
 input MessageInput {

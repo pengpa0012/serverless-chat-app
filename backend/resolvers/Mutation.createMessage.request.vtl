@@ -6,6 +6,7 @@
   },
   "attributeValues": {
     "user": $util.dynamodb.toDynamoDBJson($ctx.args.input.user),
-    "message": $util.dynamodb.toDynamoDBJson($ctx.args.input.message)
+    "message": $util.dynamodb.toDynamoDBJson($ctx.args.input.message),
+    "date": $util.dynamodb.toDynamoDBJson($util.time.nowEpochMilliSeconds())
   }
 }
