@@ -11,7 +11,9 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/chatAppTable"
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminConfirmSignUp
+      Resource: "*"
 
 plugins:
   - serverless-appsync-plugin
@@ -19,7 +21,12 @@ plugins:
 custom:
   appSync:
     name: chatAppAppSync
-    authenticationType: API_KEY
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      userPoolId:
+        Ref: UserPool
+      awsRegion: ${self:provider.region}
+      defaultAction: ALLOW
     mappingTemplatesLocation: resolvers
     mappingTemplates:
       - dataSource: RawTable
@@ -66,26 +73,31 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-    # UserPool:
-    #   Type: AWS::Cognito::Userpool
-    #   Properties:
-    #     UserPoolName: ChatAppUser
-    #     AdminCreateUserConfig:
-    #       AllowAdminCreateUseronly: false
-    #     AutoverifiedAttributes:
-    #       - phone_number
-    #       - email
-    #     MfaConfiguration: OPTIONAL
-    #     Schema:
-    #       - AttributeDataType: String
-    #         Mutable: true
-    #         Name: type
-    #       - AttributeDataType: String
-    #         Mutable: true
-    #         Name: roles
-    #     Policies:
-    #       PasswordPolicy:
-    #         RequireLowercase: false
-    #         RequireUppercase: false
-    #         RequireSymbols: false
-    #         RequireNumbers: false
+
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: chatAppUsers
+        AutoVerifiedAttributes:
+          - email
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: true
+            RequireUppercase: true
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+
+    UserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId:
+          Ref: UserPool
+        ClientName: chat-app-client
+        GenerateSecret: false
