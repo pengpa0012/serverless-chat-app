@@ -15,6 +15,15 @@ provider:
         - cognito-idp:AdminConfirmSignUp
       Resource: "*"
 
+functions:
+  registerUser:
+    handler: function/registerUser.handler
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+
 plugins:
   - serverless-appsync-plugin
 
