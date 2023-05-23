@@ -88,7 +88,7 @@ resources:
       Properties:
         UserPoolName: chatAppUsers
         AutoVerifiedAttributes:
-          - email
+          - phone_number
         Schema:
           - Name: email
             Required: true
@@ -96,10 +96,10 @@ resources:
         Policies:
           PasswordPolicy:
             MinimumLength: 8
-            RequireLowercase: true
-            RequireNumbers: true
-            RequireSymbols: true
-            RequireUppercase: true
+            RequireLowercase: false
+            RequireNumbers: false
+            RequireSymbols: false
+            RequireUppercase: false
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: false
 

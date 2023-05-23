@@ -1,11 +1,12 @@
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const userTableName = 'chatAppTable';
 
 exports.handler = async (event) => {
-  const { username, password, bio, age, name } = event;
+  const { username, password } = JSON.parse(event.body);
 
   // Generate a unique ID for the user
   const userId = uuidv4();
@@ -28,7 +29,8 @@ exports.handler = async (event) => {
   // 2. Save the user data to DynamoDB
   const userItem = {
     userId,
-    username
+    username,
+    UserStatus: 'CONFIRMED',
   };
 
   const dynamoParams = {
