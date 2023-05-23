@@ -87,12 +87,6 @@ resources:
       Type: AWS::Cognito::UserPool
       Properties:
         UserPoolName: chatAppUsers
-        AutoVerifiedAttributes:
-          - phone_number
-        Schema:
-          - Name: email
-            Required: true
-            Mutable: true
         Policies:
           PasswordPolicy:
             MinimumLength: 8

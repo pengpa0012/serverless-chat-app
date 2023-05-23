@@ -28,9 +28,8 @@ exports.handler = async (event) => {
 
   // 2. Save the user data to DynamoDB
   const userItem = {
-    userId,
+    id: userId,
     username,
-    UserStatus: 'CONFIRMED',
   };
 
   const dynamoParams = {
