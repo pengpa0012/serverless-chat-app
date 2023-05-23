@@ -14,13 +14,13 @@ type Message {
 
 input MessageInput {
   username: String!
-  message: String!
+  message: String
 }
 
 input UserInput {
-  name: String!
-  age: Int!
-  bio: String!
+  username: String!
+  age: Int
+  bio: String
 }
 
 type Query {
@@ -30,7 +30,6 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: UserInput!): User
   createMessage(input: MessageInput!): Message
   updateUser(id: ID!, input: UserInput!): User
   deleteUser(id: ID!): User

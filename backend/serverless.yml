@@ -46,9 +46,6 @@ custom:
         field: getAllUsers
       - dataSource: RawTable
         type: Mutation
-        field: createUser
-      - dataSource: RawTable
-        type: Mutation
         field: deleteUser
       - dataSource: RawTable
         type: Mutation
