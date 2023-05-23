@@ -1,19 +1,19 @@
 type User {
   id: ID!
-  name: String
+  username: String
   age: Int
   bio: String
 }
 
 type Message {
   id: ID!
-  user: String
+  username: String
   message: String
   date: AWSTimestamp
 }
 
 input MessageInput {
-  user: String!
+  username: String!
   message: String!
 }
 
