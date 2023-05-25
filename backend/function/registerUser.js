@@ -46,6 +46,12 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Headers" : "Content-Type",
+      'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
+      'Access-Control-Allow-Credentials': true,
+      "Access-Control-Allow-Methods": "*"
+    },
     body: JSON.stringify({ message: 'User registered successfully', userItem }),
   };
 };
