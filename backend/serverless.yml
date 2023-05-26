@@ -60,9 +60,14 @@ custom:
       - authenticationType: AWS_IAM
     dataSources:
       - type: AMAZON_DYNAMODB
-        name: RawTable
+        name: UserTable
         config:
-          tableName: chatAppTable
+          tableName: chatAppUserTable
+     dataSources:
+      - type: AMAZON_DYNAMODB
+        name: MessageTable
+        config:
+          tableName: chatAppMessageTable
 
 resources:
   Resources:
