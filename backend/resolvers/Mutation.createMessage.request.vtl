@@ -5,7 +5,7 @@
     "id": $util.dynamodb.toDynamoDBJson($util.autoId())
   },
   "attributeValues": {
-    "username": $util.dynamodb.toDynamoDBJson($ctx.args.input.user),
+    "username": $util.dynamodb.toDynamoDBJson($ctx.args.input.username),
     "message": $util.dynamodb.toDynamoDBJson($ctx.args.input.message),
     "date": $util.dynamodb.toDynamoDBJson($util.time.nowEpochMilliSeconds())
   }
