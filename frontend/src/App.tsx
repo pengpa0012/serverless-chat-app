@@ -69,7 +69,6 @@ function App() {
     const sub = API.graphql(graphqlOperation(onCreateMessage))
     .subscribe({
       next: ({provider,value}: any) => {
-        console.log(provider)
         setMessages((prevMessages) => [...prevMessages, value.data.onCreateMessage])
       },
       error: (error: any) => console.warn(error)
