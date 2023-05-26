@@ -8,6 +8,7 @@ import { useAtom } from 'jotai'
 import { user } from './store'
 import { getAuthorizationToken } from './utilities/authConfig'
 import { useNavigate } from 'react-router-dom'
+import ScrollableFeed from 'react-scrollable-feed'
 
 Amplify.configure({ 
   Auth: {
@@ -18,8 +19,7 @@ Amplify.configure({
   API: {
     graphql_headers: async () => ({
       Authorization: await getAuthorizationToken(),
-    }),
-    graphql_endpoint: import.meta.env.VITE_ENDPOINT
+    })
   },
   aws_appsync_graphqlEndpoint: import.meta.env.VITE_ENDPOINT,
   aws_appsync_region: import.meta.env.VITE_REGION,
@@ -41,7 +41,7 @@ function App() {
       const result = await API.graphql({query: getAllMessages}) as any
       return result.data.getAllMessages
     }, 
-  {
+    { 
     onSuccess: (data) => {
       setMessages(data)
     }
@@ -102,12 +102,14 @@ function App() {
           <h1 className="text-2xl">Hello {isLoading ? "Loading..." : data?.[0].username}!</h1>
           <button onClick={handleLogout}>Logout</button>
         </div>
-        <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
-          {
-            messages?.sort((a,b) => a.date - b.date).map((message: any, i) => (
-              <MessageBox text={message.message} key={`message-${i}`} isUser={message.username == userInfo.username} />
-            ))
-          }
+        <div className="bg-gray-700 border border-gray-500 rounded-md px-2 w-full h-[600px] overflow-hidden">
+          <ScrollableFeed>
+            {
+              messages?.sort((a,b) => a.date - b.date).map((message: any, i) => (
+                <MessageBox message={message} key={`message-${i}`} isUser={message.username == userInfo.username} />
+              ))
+            }
+          </ScrollableFeed>
         </div>  
         <input type="text" className="w-full p-2 rounded-md mt-4" placeholder="Type here..." ref={input} onKeyDown={handleType} />
       </div>
