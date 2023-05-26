@@ -6,7 +6,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Register } from './pages/register.tsx'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: false,
+    },
+  },
+})
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>

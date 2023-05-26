@@ -38,14 +38,13 @@ function App() {
   }, {enabled: userInfo.username ? true : false})
 
   useQuery("messages", async () => {
-    const result = await API.graphql({query: getAllMessages}) as any
-    return result.data.getAllMessages
-  }, 
+      const result = await API.graphql({query: getAllMessages}) as any
+      return result.data.getAllMessages
+    }, 
   {
     onSuccess: (data) => {
       setMessages(data)
-    },
-    enabled: data?.length > 0 ? true : false
+    }
   })
 
   const onSendMessage = useMutation({ 
@@ -69,18 +68,17 @@ function App() {
   useEffect(() => {
     const sub = API.graphql(graphqlOperation(onCreateMessage))
     .subscribe({
-      next: ({_,value }) => {
-        setMessages([...messages, value.data.onCreateMessage])
+      next: ({provider,value}: any) => {
+        console.log(provider)
+        setMessages((prevMessages) => [...prevMessages, value.data.onCreateMessage])
       },
-      error: (error) => console.warn(error)
+      error: (error: any) => console.warn(error)
     });
    
     return () => {
       sub.unsubscribe();
     }
-  }, [])
-  
-  
+  }, []) 
 
   const handleType = (e: any) => {
     const text = e.target.value
@@ -91,6 +89,7 @@ function App() {
     })
     input.current.value = ""
   }
+
   const handleLogout = async () => {
     await Auth.signOut();
     navigate("/register")
