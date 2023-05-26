@@ -7,6 +7,7 @@ import { getAllUsers } from './graphql/users'
 import { useAtom } from 'jotai'
 import { user } from './store'
 import { getAuthorizationToken } from './utilities/authConfig'
+import { useNavigate } from 'react-router-dom'
 
 Amplify.configure({ 
   Auth: {
@@ -23,6 +24,7 @@ Amplify.configure({
 });
 
 function App() {
+  const navigate = useNavigate()
   const [messages, setMessages] = useState<any[]>([])
   const input = useRef<any>()
   const [userInfo, setUserInfo] = useAtom(user) 
@@ -48,12 +50,17 @@ function App() {
     input.current.value = ""
   }
 
+  const handleLogout = async () => {
+    await Auth.signOut();
+    navigate("/register")
+  }
+
   return (
     <div className="min-h-screen">
       <div className="p-4">
         <div className="flex items-center justify-between mt-6 mb-8">
           <h1 className="text-2xl">Hello {data?.[0].username}!</h1>
-          <button>Logout</button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
         <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
           {

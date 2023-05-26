@@ -22,6 +22,7 @@ export const Register = () => {
 
   const onSubmit = async (values: any) => {
     const { username, password, repeat_password } = values
+    if(!username || !password) return
 
     if(tab == 0) {
       if(password !== repeat_password) return alert("Password does not match!!")
@@ -73,8 +74,8 @@ export const Register = () => {
             <label className="mb-2 text-[#919296] text-xs font-semibold">REPEAT PASSWORD</label>
             <input type="password" {...register("repeat_password")} className="p-2 outline-none rounded-md bg-[#323338] w-full focus:outline-[#7289d9]" />
           </div>}
-          {tab == 0 && <button type="submit" className="bg-[#7289d9]">Sign up</button>}
-          {tab == 1 && <button type="submit" className="bg-[#7289d9]">Log in</button>}
+          {tab == 0 && <button type="submit" className="bg-[#7289d9] py-2 rounded-md">Sign up</button>}
+          {tab == 1 && <button type="submit" className="bg-[#7289d9] py-2 rounded-md">Log in</button>}
         </form>
       </div>
     </div>
