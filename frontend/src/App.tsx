@@ -35,13 +35,16 @@ function App() {
     .then((result) => {
       setUserInfo(result)
     })
-    .catch(console.error)
+    .catch((err) => {
+      console.error(err)
+      navigate("/register")
+    })
   }, []);
 
-  const { data } = useQuery("user", async () => {
+  const { data, isLoading } = useQuery("user", async () => {
     const result = await API.graphql({query: getAllUsers}) as any
     return result.data.getAllUsers.filter((user: any) => user.username == userInfo.username)
-  })
+  }, {enabled: userInfo.username ? true : false})
 
   const handleType = (e: any) => {
     const text = e.target.value
@@ -59,7 +62,7 @@ function App() {
     <div className="min-h-screen">
       <div className="p-4">
         <div className="flex items-center justify-between mt-6 mb-8">
-          <h1 className="text-2xl">Hello {data?.[0].username}!</h1>
+          <h1 className="text-2xl">Hello {isLoading ? "Loading..." : data?.[0].username}!</h1>
           <button onClick={handleLogout}>Logout</button>
         </div>
         <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
