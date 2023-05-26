@@ -2,26 +2,44 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { MessageBox } from './components/MessageBox'
 import { useQuery } from 'react-query'
-import { API, Auth } from 'aws-amplify'
+import { API, Amplify, Auth } from 'aws-amplify'
 import { getAllUsers } from './graphql/users'
+import { useAtom } from 'jotai'
+import { user } from './store'
+import { getAuthorizationToken } from './utilities/authConfig'
+
+Amplify.configure({ 
+  Auth: {
+    region: import.meta.env.VITE_REGION,
+    userPoolId: import.meta.env.VITE_USERPOOL_ID,
+    userPoolWebClientId: import.meta.env.VITE_WEB_CLIENT,
+  },
+  API: {
+    graphql_headers: async () => ({
+      Authorization: await getAuthorizationToken(),
+    }),
+    graphql_endpoint: import.meta.env.VITE_ENDPOINT
+  },
+});
 
 function App() {
   const [messages, setMessages] = useState<any[]>([])
   const input = useRef<any>()
+  const [userInfo, setUserInfo] = useAtom(user) 
+
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
     .then((result) => {
-        console.log(result)
+      setUserInfo(result)
     })
-    .catch(console.error);
+    .catch(console.error)
   }, []);
 
-  // const {data} = useQuery("user", async () => {
-  //   const result = await API.graphql({query: getAllUsers, authMode: "AMAZON_COGNITO_USER_POOLS"})
-  //   return result
-  // })
-  
+  const { data } = useQuery("user", async () => {
+    const result = await API.graphql({query: getAllUsers}) as any
+    return result.data.getAllUsers.filter((user: any) => user.username == userInfo.username)
+  })
 
   const handleType = (e: any) => {
     const text = e.target.value
@@ -33,6 +51,10 @@ function App() {
   return (
     <div className="min-h-screen">
       <div className="p-4">
+        <div className="flex items-center justify-between mt-6 mb-8">
+          <h1 className="text-2xl">Hello {data?.[0].username}!</h1>
+          <button>Logout</button>
+        </div>
         <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
           {
             messages.map(message => (

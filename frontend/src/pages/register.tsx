@@ -13,12 +13,6 @@ export const Register = () => {
     handleSubmit,
     reset
   } = useForm();
-
-  Amplify.configure({ Auth: {
-    region: import.meta.env.VITE_REGION,
-    userPoolId: import.meta.env.VITE_USERPOOL_ID,
-    userPoolWebClientId: import.meta.env.VITE_WEB_CLIENT,
-  }});
   
 
   const onChangeTab = (tab: number) => {

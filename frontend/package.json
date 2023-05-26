@@ -12,6 +12,7 @@
   "dependencies": {
     "aws-amplify": "^5.2.2",
     "graphql-tag": "^2.12.6",
+    "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",

@@ -11,3 +11,15 @@ export const getAllUsers = gql`
     }
   }
 `
+
+
+export const getUserById = gql`
+  query getUserById {
+    getUserById {
+      id
+      username
+      age
+      bio
+    }
+  }
+`
