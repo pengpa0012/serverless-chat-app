@@ -11,6 +11,16 @@ export const getAllUsers = gql`
     }
   }
 `
+export const getAllMessages = gql`
+  query getAllMessages {
+    getAllMessages {
+      id
+      username
+      date
+      message
+    }
+  }
+`
 
 
 export const getUserById = gql`
@@ -20,6 +30,17 @@ export const getUserById = gql`
       username
       age
       bio
+    }
+  }
+`
+
+export const createMessage = gql`
+  mutation createMessage($input: MessageInput!) {
+    createMessage(input: $input) {
+      id
+      username
+      date
+      message
     }
   }
 `

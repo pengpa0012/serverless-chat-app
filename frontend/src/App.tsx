@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { MessageBox } from './components/MessageBox'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { API, Amplify, Auth } from 'aws-amplify'
-import { getAllUsers } from './graphql/users'
+import { createMessage, getAllMessages, getAllUsers } from './graphql/users'
 import { useAtom } from 'jotai'
 import { user } from './store'
 import { getAuthorizationToken } from './utilities/authConfig'
@@ -46,10 +46,34 @@ function App() {
     return result.data.getAllUsers.filter((user: any) => user.username == userInfo.username)
   }, {enabled: userInfo.username ? true : false})
 
+  useQuery("messages", async () => {
+    const result = await API.graphql({query: getAllMessages}) as any
+    return result.data.getAllMessages
+  }, 
+  {
+    onSuccess: (data) => {
+      setMessages(data)
+    },
+    enabled: data?.length > 0 ? true : false
+  })
+
+  const onCreateMessage = useMutation({ 
+    mutationFn: async (values: any) => {
+      const result = await API.graphql({query: createMessage, variables: {input: {values}}}) as any
+      return result.data.createMessage
+    },
+    onSuccess: (data: any) => {
+      setMessages([...messages, data])
+    }
+  })
+
   const handleType = (e: any) => {
     const text = e.target.value
     if(e.key != "Enter" || !text || /^\s*$/.test(text)) return
-    setMessages([...messages, text])
+    onCreateMessage.mutate({
+      username: userInfo.username,
+      message: text
+    })
     input.current.value = ""
   }
 
@@ -67,8 +91,8 @@ function App() {
         </div>
         <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
           {
-            messages.map(message => (
-              <MessageBox text={message} />
+            messages?.sort((a,b) => a.date - b.date).map((message: any, i) => (
+              <MessageBox text={message.message} key={`message-${i}`} />
             ))
           }
         </div>  

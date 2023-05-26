@@ -36,7 +36,7 @@ export const Register = () => {
         body: JSON.stringify(params),
       })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => setTab(1))
       .catch(console.error)
 
     } else {
