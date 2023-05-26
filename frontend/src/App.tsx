@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { MessageBox } from './components/MessageBox'
 import { useMutation, useQuery } from 'react-query'
-import { API, Amplify, Auth } from 'aws-amplify'
-import { createMessage, getAllMessages, getAllUsers } from './graphql/users'
+import { API, Amplify, Auth, graphqlOperation } from 'aws-amplify'
+import { createMessage, getAllMessages, getAllUsers, onCreateMessage } from './graphql/users'
 import { useAtom } from 'jotai'
 import { user } from './store'
 import { getAuthorizationToken } from './utilities/authConfig'
@@ -21,6 +21,9 @@ Amplify.configure({
     }),
     graphql_endpoint: import.meta.env.VITE_ENDPOINT
   },
+  aws_appsync_graphqlEndpoint: import.meta.env.VITE_ENDPOINT,
+  aws_appsync_region: import.meta.env.VITE_REGION,
+  aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
 });
 
 function App() {
@@ -28,18 +31,6 @@ function App() {
   const [messages, setMessages] = useState<any[]>([])
   const input = useRef<any>()
   const [userInfo, setUserInfo] = useAtom(user) 
-
-
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-    .then((result) => {
-      setUserInfo(result)
-    })
-    .catch((err) => {
-      console.error(err)
-      navigate("/register")
-    })
-  }, []);
 
   const { data, isLoading } = useQuery("user", async () => {
     const result = await API.graphql({query: getAllUsers}) as any
@@ -57,26 +48,49 @@ function App() {
     enabled: data?.length > 0 ? true : false
   })
 
-  const onCreateMessage = useMutation({ 
+  const onSendMessage = useMutation({ 
     mutationFn: async (values: any) => {
-      const result = await API.graphql({query: createMessage, variables: {input: {values}}}) as any
+      const result = await API.graphql({query: createMessage, variables: {input: values}}) as any
       return result.data.createMessage
-    },
-    onSuccess: (data: any) => {
-      setMessages([...messages, data])
     }
   })
+
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+    .then((result) => {
+      setUserInfo(result)
+    })
+    .catch((err) => {
+      console.error(err)
+      navigate("/register")
+    })
+  }, []);
+
+  useEffect(() => {
+    const sub = API.graphql(graphqlOperation(onCreateMessage))
+    .subscribe({
+      next: ({_,value }) => {
+        setMessages([...messages, value.data.onCreateMessage])
+      },
+      error: (error) => console.warn(error)
+    });
+   
+    return () => {
+      sub.unsubscribe();
+    }
+  }, [])
+  
+  
 
   const handleType = (e: any) => {
     const text = e.target.value
     if(e.key != "Enter" || !text || /^\s*$/.test(text)) return
-    onCreateMessage.mutate({
+    onSendMessage.mutate({
       username: userInfo.username,
       message: text
     })
     input.current.value = ""
   }
-
   const handleLogout = async () => {
     await Auth.signOut();
     navigate("/register")

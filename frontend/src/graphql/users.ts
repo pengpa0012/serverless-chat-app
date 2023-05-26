@@ -44,3 +44,14 @@ export const createMessage = gql`
     }
   }
 `
+
+export const onCreateMessage = `
+  subscription onCreateMessage {
+    onCreateMessage {
+      id
+      username
+      date
+      message
+    }
+  }
+`
