@@ -38,22 +38,22 @@ custom:
       defaultAction: ALLOW
     mappingTemplatesLocation: resolvers
     mappingTemplates:
-      - dataSource: RawTable
+      - dataSource: UserTable
         type: Query
         field: getUserById
-      - dataSource: RawTable
+      - dataSource: UserTable
         type: Query
         field: getAllUsers
-      - dataSource: RawTable
+      - dataSource: UserTable
         type: Mutation
         field: deleteUser
-      - dataSource: RawTable
+      - dataSource: UserTable
         type: Mutation
         field: updateUser
-      - dataSource: RawTable
+      - dataSource: MessageTable
         type: Query
         field: getAllMessages
-      - dataSource: RawTable
+      - dataSource: MessageTable
         type: Mutation
         field: createMessage
     additionalAuthenticationProviders:
@@ -66,10 +66,23 @@ custom:
 
 resources:
   Resources:
-    RawTable:
+    UserTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: chatAppTable
+        TableName: chatAppUserTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    MessageTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: chatAppMessageTable
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

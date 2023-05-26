@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const userTableName = 'chatAppTable';
+const userTableName = 'chatAppUserTable';
 
 exports.handler = async (event) => {
   const { username, password } = JSON.parse(event.body);
