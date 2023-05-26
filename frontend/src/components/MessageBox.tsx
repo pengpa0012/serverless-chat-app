@@ -1,7 +1,7 @@
 
-export const MessageBox = ({text}: any) => {
+export const MessageBox = ({text, isUser}: any) => {
   return (
-    <div className="text-start p-2 bg-green-500 rounded-md max-w-[400px] ml-auto mb-2 break-all">
+    <div className={`text-start p-2 ${isUser ? "bg-green-500 ml-auto" : "bg-gray-500 mr-auto"} rounded-md max-w-[400px] mb-2 break-all`}>
       <p>{text}</p>
     </div>
   )

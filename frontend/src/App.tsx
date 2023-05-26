@@ -106,7 +106,7 @@ function App() {
         <div className="bg-gray-700 border border-gray-500 rounded-md p-2 w-full h-[600px] overflow-y-scroll">
           {
             messages?.sort((a,b) => a.date - b.date).map((message: any, i) => (
-              <MessageBox text={message.message} key={`message-${i}`} />
+              <MessageBox text={message.message} key={`message-${i}`} isUser={message.username == userInfo.username} />
             ))
           }
         </div>  

@@ -1,7 +1,5 @@
-import gql from "graphql-tag";
 
-
-export const getAllUsers = gql`
+export const getAllUsers = `
   query getAllUsers {
     getAllUsers {
       id
@@ -11,7 +9,7 @@ export const getAllUsers = gql`
     }
   }
 `
-export const getAllMessages = gql`
+export const getAllMessages = `
   query getAllMessages {
     getAllMessages {
       id
@@ -23,7 +21,7 @@ export const getAllMessages = gql`
 `
 
 
-export const getUserById = gql`
+export const getUserById = `
   query getUserById {
     getUserById {
       id
@@ -34,7 +32,7 @@ export const getUserById = gql`
   }
 `
 
-export const createMessage = gql`
+export const createMessage = `
   mutation createMessage($input: MessageInput!) {
     createMessage(input: $input) {
       id
