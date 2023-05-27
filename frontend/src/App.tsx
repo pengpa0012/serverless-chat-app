@@ -46,8 +46,8 @@ function App() {
 
   const { data, isLoading } = useQuery("user", async () => {
     const result = await API.graphql({query: getAllUsers}) as any
-    return result.data.getAllUsers.filter((user: any) => user.username == userInfo.username)
-  }, {enabled: userInfo.username ? true : false})
+    return result.data.getAllUsers.filter((user: any) => user.username == userInfo?.username)
+  }, {enabled: userInfo?.username ? true : false})
 
   useQuery("messages", async () => {
       const result = await API.graphql({query: getAllMessages}) as any
@@ -84,7 +84,7 @@ function App() {
     const text = e.target.value
     if(e.key != "Enter" || !text || /^\s*$/.test(text)) return
     onSendMessage.mutate({
-      username: userInfo.username,
+      username: userInfo?.username,
       message: text
     })
     input.current.value = ""
@@ -107,7 +107,7 @@ function App() {
           <ScrollableFeed>
             {
               messages?.sort((a,b) => a.date - b.date).map((message: any, i) => (
-                <MessageBox message={message} key={`message-${i}`} isUser={message.username == userInfo.username} />
+                <MessageBox message={message} key={`message-${i}`} isUser={message.username == userInfo?.username} />
               ))
             }
           </ScrollableFeed>
