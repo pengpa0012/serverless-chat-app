@@ -50,10 +50,12 @@ export const Register = () => {
             Auth.completeNewPassword(user, password)
           }
         })
+        .finally(() => {
+          navigate("/")
+        })
       } catch (error) {
           console.error("ERROR ACCOUNT")
       }
-      navigate("/")
     } 
   }
 
