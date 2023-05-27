@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from "react"
 import { Amplify, Auth } from "aws-amplify";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { user } from "../store";
 
 
 export const Register = () => {
   const [tab, setTab] = useState(0)
   const navigate = useNavigate()
+  const [, setUserInfo] = useAtom(user) 
   const {
     register,
     handleSubmit,
@@ -36,21 +39,23 @@ export const Register = () => {
       })
       .then(res => res.json())
       .then(data => {
-        reset()
-        setTab(1)
+        alert("Sign up successfully")
       })
       .catch(console.error)
+      .finally(() => reset())
 
     } else {
       try {
         Auth.signIn(username, password)
         .then(user => {
+          setUserInfo(user)
           if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
             Auth.completeNewPassword(user, password)
           }
-        })
-        .finally(() => {
           navigate("/")
+        })
+        .catch((err) => {
+          alert(err)
         })
       } catch (error) {
         console.error("ERROR ACCOUNT")
