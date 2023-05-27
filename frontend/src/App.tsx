@@ -5,10 +5,10 @@ import { useMutation, useQuery } from 'react-query'
 import { API, Amplify, Auth, graphqlOperation } from 'aws-amplify'
 import { createMessage, getAllMessages, getAllUsers, onCreateMessage } from './graphql/users'
 import { useAtom } from 'jotai'
-import { isLoggedIn, user } from './store'
 import { getAuthorizationToken } from './utilities/authConfig'
 import { useNavigate } from 'react-router-dom'
 import ScrollableFeed from 'react-scrollable-feed'
+import { user } from './store'
 
 Amplify.configure({ 
   Auth: {
@@ -30,10 +30,9 @@ function App() {
   const navigate = useNavigate()
   const [messages, setMessages] = useState<any[]>([])
   const input = useRef<any>()
-  const [userInfo,] = useAtom(user) 
-  const [loggedIn,] = useAtom(isLoggedIn) 
+  const [userInfo, setUserInfo] = useAtom(user) 
 
-  if(!loggedIn) navigate("/register")
+  // if(Object.values(userInfo).length == 0) navigate("/register")
 
   const { data, isLoading } = useQuery("user", async () => {
     const result = await API.graphql({query: getAllUsers}) as any
@@ -57,6 +56,16 @@ function App() {
     }
   })
 
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+    .then((result) => {
+      setUserInfo(result)
+    })
+    .catch((err) => {
+      console.log(err)
+      navigate("/register")
+    })
+  }, []);
 
   useEffect(() => {
     const sub = API.graphql(graphqlOperation(onCreateMessage))
