@@ -48,7 +48,7 @@ exports.handler = async (event) => {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Headers" : "Content-Type",
-      'Access-Control-Allow-Origin': 'http://127.0.0.1:5173, https://serverless-chat-app-client.vercel.app/',
+      'Access-Control-Allow-Origin': 'https://serverless-chat-app-client.vercel.app',
       'Access-Control-Allow-Credentials': true,
       "Access-Control-Allow-Methods": "*"
     },
