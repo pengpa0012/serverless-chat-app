@@ -49,11 +49,11 @@ export const Register = () => {
           if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
             Auth.completeNewPassword(user, password)
           }
-          navigate("/")
         })
       } catch (error) {
           console.error("ERROR ACCOUNT")
       }
+      navigate("/")
     } 
   }
 
