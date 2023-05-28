@@ -9,12 +9,22 @@ import { user } from "../store";
 export const Register = () => {
   const [tab, setTab] = useState(0)
   const navigate = useNavigate()
-  const [, setUserInfo] = useAtom(user) 
+  const [userInfo, setUserInfo] = useAtom(user) 
   const {
     register,
     handleSubmit,
     reset
   } = useForm();
+
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+    .then((result) => {
+      if(result) navigate("/")
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
   
 
   const onChangeTab = (tab: number) => {
