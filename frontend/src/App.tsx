@@ -112,7 +112,7 @@ function App() {
             }
           </ScrollableFeed>
         </div>  
-        <input type="text" className="w-full p-2 rounded-md mt-4" placeholder="Type here..." ref={input} onKeyDown={handleType} />
+        <input type="text" className="w-full p-2 rounded-md mt-4 bg-[#3b3b3b] outline-none" placeholder="Type here..." ref={input} onKeyDown={handleType} />
       </div>
     </div>
   )
