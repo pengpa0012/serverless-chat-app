@@ -6,7 +6,7 @@ import { API, Amplify, Auth, graphqlOperation } from 'aws-amplify'
 import { createMessage, getAllMessages, getAllUsers, onCreateMessage } from './graphql/users'
 import { useAtom } from 'jotai'
 import { getAuthorizationToken } from './utilities/authConfig'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import ScrollableFeed from 'react-scrollable-feed'
 import { user } from './store'
 
@@ -40,6 +40,7 @@ function App() {
     .catch((err) => {
       console.log(err)
     })
+
   }, [])
 
   if(Object.values(userInfo).length == 0) navigate("/register")
