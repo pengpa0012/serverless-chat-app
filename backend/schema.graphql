@@ -45,6 +45,3 @@ schema {
 	mutation: Mutation
   subscription: Subscription
 }
-
-# Todo
-# test subscription on client
