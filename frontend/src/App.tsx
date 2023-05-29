@@ -31,6 +31,7 @@ function App() {
   const [messages, setMessages] = useState<any[]>([])
   const input = useRef<any>()
   const [userInfo, setUserInfo] = useAtom(user) 
+  const [counter, setCounter] = useState(0)
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
@@ -84,12 +85,22 @@ function App() {
   const handleType = (e: any) => {
     const text = e.target.value
     if(e.key != "Enter" || !text || /^\s*$/.test(text)) return
+    if(counter >= 10) {
+      input.current.disabled = true
+      setTimeout(() => {
+        input.current.disabled = false
+        setCounter(0)
+      }, 10000)
+    }
+    setCounter(prev => prev + 1)
+
     onSendMessage.mutate({
       username: userInfo?.username,
       message: text
     })
     input.current.value = ""
   }
+
 
   const handleLogout = async () => {
     await Auth.signOut();
@@ -113,7 +124,7 @@ function App() {
             }
           </ScrollableFeed>
         </div>  
-        <input type="text" className="w-full p-2 rounded-md mt-4 bg-[#3b3b3b] outline-none" placeholder="Type here..." ref={input} onKeyDown={handleType} />
+        <input type="text" className="w-full p-2 rounded-md mt-4 bg-[#3b3b3b] outline-none disabled:cursor-not-allowed disabled:bg-[#7e7e7e]" placeholder="Type here..." ref={input} onKeyDown={handleType} />
       </div>
     </div>
   )
